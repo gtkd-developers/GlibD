@@ -1,0 +1,28 @@
+{
+    "name": "glibd",
+	"targetType": "library",
+	"targetName": "glibd-2",
+	"sourcePaths": ["generated"],
+    "description": "GlibD is the Digital Mars D programing language OO wrapper for Glib.",
+    "homepage": "http://gtkd.org",
+    "license": "LGPL license with additional exceptions",
+    "authors": [
+        "Frank Benoit",
+        "Jake Day",
+        "Jonas Kivi",
+        "Alan Knowles",
+        "Antonio Monteiro",
+        "Sebastián E. Peyrott",
+        "John Reimer",
+        "Mike Wey",
+        "hauptmech"
+	],
+	"preGenerateCommands-posix": [
+		"dub fetch girtod || true",
+		"cd $PACKAGE_DIR && dub run girtod -- -i src -o generated --use-runtime-linker"
+	],
+	"preGenerateCommands-windows": [
+		"dub fetch girtod || VER>NUL",
+		"cd $PACKAGE_DIR && dub run girtod -- -i src -o generated --use-runtime-linker"
+	]
+}
