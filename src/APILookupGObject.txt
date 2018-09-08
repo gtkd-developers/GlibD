@@ -894,6 +894,14 @@ code: start
 			setDouble(value);
 		}
 	}
+
+	/**
+	 * The GType of the contianed value.
+	 */
+	public @property GType gType()
+	{
+		return gValue.gType;
+	}
 code: end
 
 struct: WeakRef
