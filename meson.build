@@ -65,3 +65,5 @@ glibd_dep = declare_dependency(
     link_with: [glibd],
     include_directories: [gir_bind_dir]
 )
+
+subdir('tests')
