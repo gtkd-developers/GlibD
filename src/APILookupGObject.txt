@@ -349,9 +349,9 @@ code: end
 
 struct: Object
 import: core.memory
+import: glib.c.functions : g_datalist_get_flags
 import: gobject.DClosure
 import: gobject.Signals
-import: std.algorithm
 import: std.traits
 merge: InitiallyUnowned
 noSignal: notify
@@ -445,8 +445,7 @@ code: start
 				isGcRoot = false;
 			}
 
-			// We only have a toggle ref if the C object hods a reference to the D object.
-			if ( g_object_get_data(gObject, cast(char*)"GObject") is cast(void*)this )
+			if ( hasToggleRef() )
 				g_object_remove_toggle_ref(gObject, cast(GToggleNotify)&toggleNotify, cast(void*)this);
 			else
 				g_object_unref(gObject);
@@ -583,6 +582,16 @@ code: start
 		iface.doref();
 
 		return iface;
+	}
+
+	/**
+	 * Is there a toggle ref connected to this object.
+	 */
+	private bool hasToggleRef()
+	{
+		enum TOGGLE_REF_FLAG = 0x1;
+
+		return (g_datalist_get_flags(&gObject.qdata) & TOGGLE_REF_FLAG) != 0;
 	}
 
 	/** */
