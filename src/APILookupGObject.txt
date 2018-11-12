@@ -594,6 +594,21 @@ code: start
 		return (g_datalist_get_flags(&gObject.qdata) & TOGGLE_REF_FLAG) != 0;
 	}
 
+	public void removeGcRoot()
+	{
+		if ( hasToggleRef() )
+		{
+			g_object_ref(gObject);
+			g_object_remove_toggle_ref(gObject, cast(GToggleNotify)&toggleNotify, cast(void*)this);
+		}
+
+		if ( isGcRoot )
+		{
+			GC.removeRoot(cast(void*)this);
+			isGcRoot = false;
+		}
+	}
+
 	/** */
 	public void setProperty(T)(string propertyName, T value)
 	{
