@@ -483,10 +483,14 @@ code: start
 				GC.removeRoot(cast(void*)this);
 				isGcRoot = false;
 			}
-			//Add a reference for the original D object before we remove the toggle reference.
-			g_object_ref(gObject);
-			g_object_remove_toggle_ref(gObject, cast(GToggleNotify)&toggleNotify, cast(void*)this);
 
+			if ( hasToggleRef() )
+			{
+				//Add a reference for the original D object before we remove the toggle reference.
+				g_object_ref(gObject);
+				g_object_remove_toggle_ref(gObject, cast(GToggleNotify)&toggleNotify, cast(void*)this);
+			}
+			
 			//The new object handles the memory management.
 			return new T(cast(typeof(T.tupleof[0]))gObject, false);
 		}
