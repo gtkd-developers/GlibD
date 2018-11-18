@@ -407,7 +407,7 @@ code: start
 				obj.isGcRoot = false;
 			}
 
-			if ( obj.gObject.refCount > 0 )
+			if ( obj.hasToggleRef() )
 				obj.removeToggleRef(cast(GToggleNotify)&toggleNotify, cast(void*)obj);
 
 			obj.gObject = null;
@@ -490,7 +490,7 @@ code: start
 				g_object_ref(gObject);
 				g_object_remove_toggle_ref(gObject, cast(GToggleNotify)&toggleNotify, cast(void*)this);
 			}
-			
+
 			//The new object handles the memory management.
 			return new T(cast(typeof(T.tupleof[0]))gObject, false);
 		}
