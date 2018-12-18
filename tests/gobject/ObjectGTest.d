@@ -24,6 +24,7 @@ import gio.Cancellable;
 
 void main()
 {
+	//Check if the toggleRef is correctly set/removed when casting using ObjectG.opCast.
 	ObjectG obj = new ObjectG( cast(GObject*)g_object_new(Cancellable.getType(), null, null) );
 	Cancellable can = cast(Cancellable)obj;
 }
