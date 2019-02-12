@@ -556,4 +556,8 @@ version !Windows: start
 		move: unix_mount_copy UnixMountEntry copy
 		move: unix_mount_for UnixMountEntry mount_for
 	version: end
+
+	version 2.58: start
+		move: unix_mount_get_options UnixMountEntry get_options
+	version: end
 version: end
