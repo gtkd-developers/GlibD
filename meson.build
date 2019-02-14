@@ -15,6 +15,7 @@ gen_dir = 'generated'
 # Dependencies
 #
 glib_dep          = dependency('glib-2.0')
+gmodule_dep       = dependency('gmodule-2.0')
 gobject_dep       = dependency('gobject-2.0')
 gio_dep           = dependency('gio-2.0')
 # The Glib gir files are part of the gobject introspection package.
@@ -43,7 +44,7 @@ gir_binding_sources = girtod_gen.stdout().strip().split('\n')
 glibd = library('glibd-2.0',
     [gir_binding_sources],
     include_directories: [gir_bind_dir],
-    dependencies: [glib_dep, gobject_dep, gio_dep],
+    dependencies: [glib_dep, gmodule_dep, gobject_dep, gio_dep],
     install: true,
     soversion: project_soversion,
     version: meson.project_version())
@@ -57,7 +58,7 @@ pkg_conf.generate(glibd,
     name: 'glibd-2.0',
     subdirs: 'd/glibd-2',
     version: meson.project_version(),
-    requires: [glib_dep, gio_dep, gobject_dep],
+    requires: [glib_dep, gmodule_dep, gio_dep, gobject_dep],
     description: 'D bindings for the GLib C Utility Library.')
 
 # for use by others which embed this as subproject
