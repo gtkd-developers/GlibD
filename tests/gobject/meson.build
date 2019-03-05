@@ -1,3 +1,12 @@
+dclosure_test = executable(
+	'dclosure_test',
+	'DClosureTest.d',
+	include_directories: [gir_bind_dir],
+	dependencies: [glib_dep, gobject_dep, gio_dep],
+	link_with: [glibd]
+)
+test('gobject_dclosure_test', dclosure_test)
+
 objectg_test = executable(
 	'objectg_test',
 	'ObjectGTest.d',
