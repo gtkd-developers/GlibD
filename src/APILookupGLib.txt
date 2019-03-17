@@ -1105,7 +1105,7 @@ code: start
 		bool delegate(string) readError = null )
 	{
 		string commandLine;
-		foreach ( int count, string arg; argv)
+		foreach ( count, string arg; argv)
 		{
 			if ( count > 0 )
 			{
@@ -1943,6 +1943,8 @@ version 2.54: start
 	move: ascii_string_to_unsigned Str
 version: end
 
+version 2.60: move: strv_equal Str
+
 move: string_new String
 move: string_new_len String
 move: string_sized_new String
@@ -2032,6 +2034,7 @@ move: utf8_to_ucs4_fast Unicode
 move: utf8_to_utf16 Unicode
 move: utf8_validate Unicode
 version 2.52: move: utf8_make_valid Unicode
+version 2.60: move: utf8_validate_len Unicode
 
 version !Windows: start
 	move: unix_error_quark UnixUtils error_quark
