@@ -40,8 +40,9 @@ void main()
 	closure = new DClosure(&bar);
 	closure = new DClosure(baz);
 
-	bool test(int i, float f, string s, FileInfo o)
+	bool test(char c, int i, float f, string s, FileInfo o)
 	{
+		assert(c == 't');
 		assert(i == 10);
 		assert(f == 0x1.99999ap-3f);
 		assert(s == "test");
@@ -51,7 +52,7 @@ void main()
 	}
 
 	closure = new DClosure(&test);
-	Value[] params = [new Value(10), new Value(0x1.99999ap-3f), new Value("test"), new Value(info)];
+	Value[] params = [new Value('t'), new Value(10), new Value(0x1.99999ap-3f), new Value("test"), new Value(info)];
 	Value ret = new Value();
 	ret.init(GType.BOOLEAN);
 
