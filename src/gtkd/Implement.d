@@ -87,6 +87,7 @@ template ImplementClassImpl(Klass, Impl)
 		string result;
 
 		result ~= "import glib.Str;\n"~
+		          "import gobject.ObjectG;\n"~
 		          "import gobject.Type : Type;\n"~
 		          "import gobject.c.functions : g_type_class_peek_parent, g_object_get_data;\n";
 
@@ -105,8 +106,7 @@ template ImplementClassImpl(Klass, Impl)
 			          "\t"~ Klass.stringof ~"Class parentClass;\n"~
 			          "}\n\n";
 
-			result ~= "protected "~ toPascalCase!Impl() ~"* "~ toCamelCase!Impl() ~";\n"~
-			          "protected static "~ Klass.stringof ~"Class* parentClass = null;\n\n";
+			result ~= "protected "~ toPascalCase!Impl() ~"* "~ toCamelCase!Impl() ~";\n\n";
 
 			result ~= "protected override void* getStruct()\n"~
 			          "{\n"~
@@ -144,7 +144,7 @@ template ImplementClassImpl(Klass, Impl)
 		{
 			result ~= "static void "~ toCamelCase!Impl() ~"ClassInit (void* klass)\n"~
 			          "{\n"~
-			          "\tparentClass = cast("~ Klass.stringof ~"Class*) g_type_class_peek_parent(klass);\n";
+			          "\t"~ fullyQualifiedName!(getClass!Klass) ~"* "~ toCamelCase!(getClass!Klass)() ~" = cast("~ fullyQualifiedName!(getClass!Klass) ~"*)klass;\n";
 
 			result ~= setFunctionPointers!(getClass!Klass)();
 
@@ -205,16 +205,6 @@ template ImplementClassImpl(Klass, Impl)
 
 		return result;
 	}
-
-	template getClass(Instance)
-	{
-		mixin("import "~ getClassImport!Instance() ~"; alias getClass = "~ Instance.stringof ~"Class;");
-	}
-
-	private string getClassImport(Klass)()
-	{
-		return fullyQualifiedName!Klass.replace("."~ Klass.stringof, "");
-	}
 }
 
 template ImplementInterfaceImpl(Base, Klass, Impl)
@@ -244,8 +234,7 @@ template ImplementInterfaceImpl(Base, Klass, Impl)
 			          "\t"~ Base.stringof ~"Class parentClass;\n"~
 			          "}\n\n";
 
-			result ~= "protected "~ toPascalCase!Impl() ~"* "~ toCamelCase!Impl() ~";\n"~
-			          "protected static "~ Base.stringof ~"Class* parentClass = null;\n\n";
+			result ~= "protected "~ toPascalCase!Impl() ~"* "~ toCamelCase!Impl() ~";\n\n";
 
 			result ~= "protected override void* getStruct()\n"~
 			          "{\n"~
@@ -302,7 +291,7 @@ template ImplementInterfaceImpl(Base, Klass, Impl)
 		{
 			result ~= "static void "~ toCamelCase!Impl() ~"ClassInit (void* klass)\n"~
 			          "{\n"~
-			          "\tparentClass = cast("~ Base.stringof ~"Class*) g_type_class_peek_parent(klass);\n"~
+			          "\t"~ fullyQualifiedName!(getClass!Base) ~"* "~ toCamelCase!(getClass!Base)() ~" = cast("~ fullyQualifiedName!(getClass!Base) ~"*)klass;\n"~
 			          "}\n\n";
 		}
 
@@ -364,6 +353,16 @@ private string getTypeFunction(Iface)()
 private string getTypeImport(Iface)()
 {
 	return fullyQualifiedName!Iface.replace("types."~ Iface.stringof, "functions");
+}
+
+template getClass(Instance)
+{
+	mixin("import "~ getClassImport!Instance() ~"; alias getClass = "~ Instance.stringof ~"Class;");
+}
+
+private string getClassImport(Klass)()
+{
+	return fullyQualifiedName!Klass.replace("."~ Klass.stringof, "");
 }
 
 private string getWrapFunction(Impl, Member, string name)()
@@ -433,12 +432,12 @@ private string getWrapFunction(Impl, Member, string name)()
 			if ( (ParamStorage[i] == STC.out_ || ParamStorage[i] == STC.ref_) && isGtkdType!(DParamTypes[i]) )
 			{
 				result ~= "\tif ( d_"~ ParamNames[i] ~" !is null )\n"~
-				          "\t\t"~ ParamNames[i] ~" = d_"~ ParamNames[i] ~".get"~ DParamTypes[i].stringof ~"Struct();\n";
+				          "\t\t*"~ ParamNames[i] ~" = *d_"~ ParamNames[i] ~".get"~ DParamTypes[i].stringof ~"Struct();\n";
 			}
 		}
 
 		if ( isGtkdType!(ReturnType!(__traits(getMember, Impl, name))) && isPointer!(ReturnType!Member) )
-			result ~= "\treturn ret.get"~ (ReturnType!(__traits(getMember, Impl, name))).stringof ~"Struct();\n";
+			result ~= "\treturn ret ? ret.get"~ (ReturnType!(__traits(getMember, Impl, name))).stringof ~"Struct() : null;\n";
 		else if ( !is(ReturnType!Member == void) )
 			result ~= "\treturn ret;\n";
 
