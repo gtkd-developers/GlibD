@@ -1985,9 +1985,11 @@ version: end
 
 version 2.60: move: strv_equal Str
 
-move: string_new String
-move: string_new_len String
-move: string_sized_new String
+version <2.70: start
+	move: string_new String
+	move: string_new_len String
+	move: string_sized_new String
+version: end
 
 move: bit_lock Thread
 move: bit_trylock Thread
