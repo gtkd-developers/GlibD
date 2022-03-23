@@ -32,7 +32,8 @@ message('Generating D interfaces from GIR...')
 girtod_gen = run_command(gir_to_d_prog,
                          '-i', gir_wrap_dir,
                          '-o', gir_d_intf_dir,
-                         '--print-files', 'relative,' + source_root)
+                         '--print-files', 'relative,' + source_root,
+                         check: true)
 if girtod_gen.returncode() != 0
     error('Unable to build D intefaces from GIR:\n' + girtod_gen.stderr())
 endif
