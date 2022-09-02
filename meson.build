@@ -1,14 +1,16 @@
 project('GlibD', 'd',
+    meson_version : '>=0.56',
+
     license: 'LGPL-3.0',
-    version: '2.2.0'
+    version: '2.4.0'
 )
 
 project_soversion = 0
 
 pkg_conf = import('pkgconfig')
 
-source_root = meson.current_source_dir()
-build_root = meson.current_build_dir()
+source_root = meson.project_source_root()
+build_root = meson.project_build_root()
 gen_dir = 'generated'
 
 #
