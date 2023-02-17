@@ -2,7 +2,7 @@ project('GlibD', 'd',
     meson_version : '>=0.56',
 
     license: 'LGPL-3.0',
-    version: '2.4.0'
+    version: '2.4.1'
 )
 
 project_soversion = 0
