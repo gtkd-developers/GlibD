@@ -1313,6 +1313,7 @@ code: end
 
 struct: String
 class: StringG
+version 2.78: noCode: new_take
 
 struct: Thread
 noCode: new
