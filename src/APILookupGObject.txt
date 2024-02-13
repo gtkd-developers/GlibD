@@ -24,6 +24,7 @@ wrap: gobject
 file: GObject-2.0.gir
 
 noAlias: Type
+noEnum: IOCondition
 addEnums: start
 
 	/**
