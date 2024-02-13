@@ -235,6 +235,9 @@ noCode: new_from_timeval_utc
 noCode: new_local
 noCode: new_utc
 noCode: hash
+#TODO: Static functions
+version 2.79: noCode: new_from_unix_utc_usec
+version 2.79: noCode: new_from_unix_local_usec
 code: start
 	/**
 	 * Creates a DateTime corresponding to the given Unix time t
@@ -709,6 +712,10 @@ code: end
 
 struct: Module
 in: symbol symbol
+
+struct: Once
+in: init_enter location
+in: init_leave location
 
 struct: PatternSpec
 class: Pattern
@@ -1313,6 +1320,8 @@ code: end
 
 struct: String
 class: StringG
+noCode: new
+array: new_len init len
 version 2.78: noCode: new_take
 
 struct: Thread
