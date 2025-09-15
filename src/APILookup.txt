@@ -51,3 +51,4 @@ copy: gtkd
 lookup: APILookupGLib.txt
 lookup: APILookupGObject.txt
 lookup: APILookupGio.txt
+lookup: APILookupGioUnix.txt
