@@ -49,6 +49,7 @@ license: end
 outputRoot: generated
 copy: gtkd
 lookup: APILookupGLib.txt
+lookup: APILookupGLibUnix.txt
 lookup: APILookupGObject.txt
 lookup: APILookupGio.txt
 lookup: APILookupGioUnix.txt
